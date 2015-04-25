@@ -45,7 +45,9 @@ MAN
   [Shader Vertex/Fragment] toggle between two different shaders. This option stop the current vertex/fragment shaders
   and load a new one with different shading algorithm.
   
-  [Mesh Flat/Smooth] toggle the method of shading from flat to smooth and vice versa.
+  [Mesh Flat/Smooth] toggle the mesh from flat to smooth and vice versa.
+  
+  [Draw Triangles/Lines] toggle the method of drawing from triangles to line strip and vice versa.
 
 CONTACT
 -------
