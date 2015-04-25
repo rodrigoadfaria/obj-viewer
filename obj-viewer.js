@@ -72,6 +72,13 @@ var OBJ;
 // ID of the timeout event
 var animID;
 
+// tell us the kind of primitive to be used
+var GL_DRAW = {
+	TRIANGLES: 1,
+	LINE_STRIP: 2
+}
+var glDraw = GL_DRAW.TRIANGLES;
+
 // generate a quadrilateral with triangles
 function quad(a, b, c, d) {
 	var t1 = subtract(vertices[b], vertices[a]);
@@ -216,6 +223,22 @@ function prepareElements(initObj) {
 		isSmoothShading = true;
 	});
 
+	var btnTriangles = $("#btn-triangles");
+	var btnLines = $("#btn-lines");
+	btnTriangles.click(function() {
+		btnLines.removeClass('active');
+		btnTriangles.addClass('active');
+		
+		glDraw = GL_DRAW.TRIANGLES;
+	});
+
+	btnLines.click(function() {
+		btnTriangles.removeClass('active');
+		btnLines.addClass('active');
+		
+		glDraw = GL_DRAW.LINE_STRIP;
+	});
+	
     $("#btn-load-file").click(function() {
 		$("#files").trigger('click');
 	});
@@ -266,7 +289,10 @@ var render = function() {
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
 
-    gl.drawArrays( gl.TRIANGLES, 0, OBJ.vertices.length );
+    if (glDraw == GL_DRAW.TRIANGLES)
+		gl.drawArrays( gl.TRIANGLES, 0, OBJ.vertices.length);
+	else if (glDraw == GL_DRAW.LINE_STRIP)
+		gl.drawArrays(gl.LINE_STRIP, 0, OBJ.vertices.length);
             
     animID = requestAnimFrame(render);
 }
