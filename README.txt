@@ -31,7 +31,7 @@ MAN
   Just open the 'objViewer.html' page in your preferred web browser and enjoy it! We have detailed aspects
   regarding the features above:
   
-  [Load file] read a .obj file with the description of faces, vertices, normals and object name.
+  [Load OBJ file...] read a .obj file with the description of faces, vertices, normals and object name.
   Some commands such as 'mtllib', 'usemtl', are not being read.
   
   [Rotate X] rotate the object in X axis.
@@ -40,12 +40,12 @@ MAN
   
   [Rotate Z] rotate the object in Z axis.
   
-  [Toggle Rotation] stop the current rotation independently of the axis.
+  [Toggle rotation] stop the current rotation independently of the axis.
   
-  [Shader 1/2] toggle between two different shaders. This option stop the current vertex/fragment shaders
-  and load a new one with different shading.
+  [Shader Vertex/Fragment] toggle between two different shaders. This option stop the current vertex/fragment shaders
+  and load a new one with different shading algorithm.
   
-  [Flat/Smooth] toggle the method of shading from flat to smooth and vice versa.
+  [Mesh Flat/Smooth] toggle the method of shading from flat to smooth and vice versa.
 
 CONTACT
 -------
@@ -55,14 +55,19 @@ CONTACT
 STRUCTURE
 ---------
   libs \
+      jquery-2.1.3.min.js
       initShaders.js
       MV.js
       webgl-utils.js
   sample_obj \
       teapot.obj
-  objReader.js
-  objViewer.html
-  objViewer.js
+  style
+      logo.png
+	  separator.svg
+	  style.css
+  obj-reader.js
+  obj-viewer.html
+  obj-viewer.js
   README.txt
 	  
 NOTICE
@@ -78,6 +83,6 @@ REFERENCE
   1. Learning WebGL http://learningwebgl.com/blog/?page_id=1217
   2. Marcel P. Jackowski - Lecture notes from MAC-0420-5744 - Computer Graphics, University of Sao Paulo
   3. K. Matsuda, R. Lea - WebGL Programming Guide, Addison-Wesley, 2013
-  4. Shirley & Marschner - Fundamentals of Computer Graphics, 3rd Ed.,CRC Press, 2010
+  4. Shirley & Marschner - Fundamentals of Computer Graphics, 3rd Ed., CRC Press, 2010
   
   
