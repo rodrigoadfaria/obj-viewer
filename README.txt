@@ -1,4 +1,4 @@
-  __  __            _____  ___   _  _  ___    ___           _____  ______  _  _    _  _                    
+__  __            _____  ___   _  _  ___    ___           _____  ______  _  _    _  _                    
  |  \/  |    /\    / ____|/ _ \ | || ||__ \  / _ \         | ____||____  || || |  | || |                   
  | \  / |   /  \  | |    | | | || || |_  ) || | | | ______ | |__      / / | || |_ | || |_                  
  | |\/| |  / /\ \ | |    | | | ||__   _|/ / | | | ||______||___ \    / /  |__   _||__   _|                 
@@ -86,5 +86,3 @@ REFERENCE
   2. Marcel P. Jackowski - Lecture notes from MAC-0420-5744 - Computer Graphics, University of Sao Paulo
   3. K. Matsuda, R. Lea - WebGL Programming Guide, Addison-Wesley, 2013
   4. Shirley & Marschner - Fundamentals of Computer Graphics, 3rd Ed., CRC Press, 2010
-  
-  
