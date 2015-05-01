@@ -46,11 +46,13 @@ MAN
   and load a new one with different shading algorithm.
   
   [Mesh Flat/Smooth] toggle the method of shading from flat to smooth and vice versa.
+  
+  [Draw Triangles/Lines] toggle the method of drawing from triangles to line strip and vice versa.
 
 CONTACT
 -------
   If you have problems, questions, ideas or suggestions, please contact us by sending a detailed
-  mail to rofaria@ime.usp.br or rodrigoadfaria@gmail.com.
+  mail to rofaria@ime.usp.br or {rodrigoadfaria, caiodadauto}@gmail.com.
 
 STRUCTURE
 ---------
