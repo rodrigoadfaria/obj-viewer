@@ -56,6 +56,9 @@ CONTACT
 
 STRUCTURE
 ---------
+  js \
+      Quaternion.js
+	  VirtualTrackBall.js
   libs \
       jquery-2.1.3.min.js
       initShaders.js
@@ -77,7 +80,7 @@ NOTICE
   We have tested only in Microsoft Internet Explorer v11.0.9600 and Google Chrome v41.0.2272.118.
   If you have a web browser that supports the HTML5 canvas and WebGL technology, you will get it working.
   
-  You can see detailed information of the functions in the 'objViewer.js', 'objReader.js' files.
+  You can see detailed information of the functions in the javascript files.
   
 REFERENCE
 ---------
@@ -86,4 +89,4 @@ REFERENCE
   2. Marcel P. Jackowski - Lecture notes from MAC-0420-5744 - Computer Graphics, University of Sao Paulo
   3. K. Matsuda, R. Lea - WebGL Programming Guide, Addison-Wesley, 2013
   4. Shirley & Marschner - Fundamentals of Computer Graphics, 3rd Ed., CRC Press, 2010
-  5. Quaternions, http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/index.htm
+  5. Quaternions algebra, http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/index.htm
