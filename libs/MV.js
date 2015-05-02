@@ -241,7 +241,7 @@ function subtract( u, v )
 
         for ( var i = 0; i < u.length; ++i ) {
             if ( u[i].length != v[i].length ) {
-                throw "subtract(): trying to subtact matrices" +
+                throw "subtract(): trying to subtract matrices" +
                     " of different dimensions";
             }
             result.push( [] );
@@ -253,11 +253,9 @@ function subtract( u, v )
         result.matrix = true;
 
         return result;
-    }
-    else if ( u.matrix && !v.matrix || !u.matrix && v.matrix ) {
-        throw "subtact(): trying to subtact  matrix and non-matrix variables";
-    }
-    else {
+    } else if ( u.matrix && !v.matrix || !u.matrix && v.matrix ) {
+        throw "subtract(): trying to subtract  matrix and non-matrix variables";
+    } else {
         if ( u.length != v.length ) {
             throw "subtract(): vectors are not the same length";
         }
@@ -557,6 +555,13 @@ function cross( u, v )
     ];
 
     return result;
+}
+
+//----------------------------------------------------------------------------
+
+function lengthOf( u )
+{
+    return Math.sqrt( dot(u, u) );
 }
 
 //----------------------------------------------------------------------------

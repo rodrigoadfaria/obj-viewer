@@ -52,7 +52,7 @@ MAN
 CONTACT
 -------
   If you have problems, questions, ideas or suggestions, please contact us by sending a detailed
-  mail to rofaria@ime.usp.br or {rodrigoadfaria, caiodadauto}@gmail.com.
+  mail to caio.dadauto@usp.br, rofaria@ime.usp.br or {caiodadauto, rodrigoadfaria}@gmail.com.
 
 STRUCTURE
 ---------
@@ -86,3 +86,4 @@ REFERENCE
   2. Marcel P. Jackowski - Lecture notes from MAC-0420-5744 - Computer Graphics, University of Sao Paulo
   3. K. Matsuda, R. Lea - WebGL Programming Guide, Addison-Wesley, 2013
   4. Shirley & Marschner - Fundamentals of Computer Graphics, 3rd Ed., CRC Press, 2010
+  5. Quaternions, http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/index.htm

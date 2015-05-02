@@ -79,6 +79,8 @@ var GL_DRAW = {
 }
 var glDraw = GL_DRAW.TRIANGLES;
 
+var virtualTB;
+
 // generate a quadrilateral with triangles
 function quad(a, b, c, d) {
 	var t1 = subtract(vertices[b], vertices[a]);
@@ -245,6 +247,9 @@ function prepareElements(initObj) {
 	$("#files").change(function (evt) {
 		setupFileLoad(evt);
     });
+
+	virtualTB = new VirtualTrackBall();
+	setupCanvasMouseEvents();	
 }
 
 /**
@@ -269,22 +274,27 @@ function resizeCanvas() {
 var render = function() {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
             
-    if (flag) theta[axis] += 2.0;
+    theta[axis] += 1.0;
             
     eye = vec3(cradius * Math.sin(ctheta) * Math.cos(cphi),
                cradius * Math.sin(ctheta) * Math.sin(cphi), 
                cradius * Math.cos(ctheta));
+	eye = vec3(0.0, 0.0, 7.0);
 
     modelViewMatrix = lookAt(eye, at, up);
 
 	modelViewMatrix = mult(modelViewMatrix, genScale([OBJ.mov_matrix.scale, OBJ.mov_matrix.scale, OBJ.mov_matrix.scale]));
     modelViewMatrix = mult(modelViewMatrix, translate([-OBJ.mov_matrix.x, -OBJ.mov_matrix.y, -OBJ.mov_matrix.z]));
 	
-	modelViewMatrix = mult(modelViewMatrix, rotate(theta[xAxis], [1, 0, 0] ));
+	/*modelViewMatrix = mult(modelViewMatrix, rotate(theta[xAxis], [1, 0, 0] ));
     modelViewMatrix = mult(modelViewMatrix, rotate(theta[yAxis], [0, 1, 0] ));
-    modelViewMatrix = mult(modelViewMatrix, rotate(theta[zAxis], [0, 0, 1] ));
+    modelViewMatrix = mult(modelViewMatrix, rotate(theta[zAxis], [0, 0, 1] ));*/
     
+	var vtrm = virtualTB.getRotationMatrix();
+	modelViewMatrix = mult(modelViewMatrix, vtrm);
+	
     projectionMatrix = ortho(xleft, xright, ybottom, ytop, znear, zfar);
+	perspectiveMatrix = perspective(30, canvas.width / canvas.height, 0.1, zfar);
 
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
@@ -294,7 +304,8 @@ var render = function() {
 	else if (glDraw == GL_DRAW.LINE_STRIP)
 		gl.drawArrays(gl.LINE_STRIP, 0, OBJ.vertices.length);
             
-    animID = requestAnimFrame(render);
+    //if (flag) 
+		//animID = requestAnimFrame(render);
 }
 
 /**
@@ -418,4 +429,53 @@ function loadObject(data, fileName) {
 		isStart = false;
 		init();
 	}
+};
+
+/**
+* Set up mouse down, up and move events in canvas element.
+*/
+function setupCanvasMouseEvents() {
+	virtualTB.setWinSize(canvas.width, canvas.height);
+	
+	canvas.addEventListener("mousedown", this.mouseDownListener(), false);
+	canvas.addEventListener("mouseup", this.mouseUpListener(), false);
+	canvas.addEventListener("mousemove", this.mouseMoveListener(), false);
+};
+
+/**
+* Mouse down event listener used to capture the click in the canvas area
+* to start monitoring the user movements.
+*/
+function mouseDownListener() {
+	return function(event) {
+		virtualTB.mousedown = true;
+		var rect = canvas.getBoundingClientRect();
+		virtualTB.setRotationStart(event.clientX - rect.left, event.clientY - rect.top);
+	};
+};
+
+/**
+* Mouse up event listener used to capture the release of the mouse
+* when clicked in the canvas area to end up the user movements.
+*/
+function mouseUpListener() {
+	return function(event) {
+		virtualTB.mousedown = false;
+	};
+};
+
+/**
+* Mouse move event listener used to keep tracking the user movements
+* in the canvas area and rotate the scene according it.
+*/
+function mouseMoveListener() {
+	return function(event) {
+		if (virtualTB.mousedown == true) {
+			var rect = canvas.getBoundingClientRect();
+			var x = event.clientX - rect.left;
+			var y = event.clientY - rect.top;
+			virtualTB.rotateTo(x, y);
+			render();
+		}
+	};
 }
