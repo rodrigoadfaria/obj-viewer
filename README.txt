@@ -58,7 +58,7 @@ STRUCTURE
 ---------
   js \
       Quaternion.js
-	  VirtualTrackBall.js
+      VirtualTrackBall.js
   libs \
       jquery-2.1.3.min.js
       initShaders.js

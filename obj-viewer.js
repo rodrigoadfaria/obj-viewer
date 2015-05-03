@@ -276,10 +276,10 @@ var render = function() {
             
     theta[axis] += 1.0;
             
-    eye = vec3(cradius * Math.sin(ctheta) * Math.cos(cphi),
+    /*eye = vec3(cradius * Math.sin(ctheta) * Math.cos(cphi),
                cradius * Math.sin(ctheta) * Math.sin(cphi), 
                cradius * Math.cos(ctheta));
-	eye = vec3(0.0, 0.0, 7.0);
+	//eye = vec3(0.0, 0.0, 7.0);*/
 
     modelViewMatrix = lookAt(eye, at, up);
 
@@ -435,11 +435,12 @@ function loadObject(data, fileName) {
 * Set up mouse down, up and move events in canvas element.
 */
 function setupCanvasMouseEvents() {
-	virtualTB.setWinSize(canvas.width, canvas.height);
+	virtualTB.setCanvasSize(canvas.width, canvas.height);
 	
 	canvas.addEventListener("mousedown", this.mouseDownListener(), false);
 	canvas.addEventListener("mouseup", this.mouseUpListener(), false);
 	canvas.addEventListener("mousemove", this.mouseMoveListener(), false);
+	canvas.addEventListener("mousewheel", this.mouseWheelListener(), false );
 };
 
 /**
@@ -478,4 +479,34 @@ function mouseMoveListener() {
 			render();
 		}
 	};
-}
+};
+
+function mouseWheelListener() {
+	return function(event) {
+		var d = ((typeof event.wheelDelta != "undefined") ? 
+			(-event.wheelDelta) : event.detail);
+		d = 100 * (( d > 0) ? 1 : -1);
+
+		var cPos = new Object();
+		cPos.x = eye[0], cPos.y = eye[1], cPos.z = eye[2];
+		if (isNaN(cPos.x) || isNaN(cPos.y) || isNaN(cPos.y))
+		  return;
+
+		var r = cPos.x*cPos.x + cPos.y*cPos.y;
+		var sqr = Math.sqrt(r);
+		var sqrZ = Math.sqrt(cPos.z*cPos.z + r);
+
+
+		var nx = cPos.x + ((r==0)?0:(d * cPos.x/sqr));
+		var ny = cPos.y + ((r==0)?0:(d * cPos.y/sqr));
+		var nz = cPos.z + ((sqrZ==0)?0:(d * cPos.z/sqrZ));
+
+		if (isNaN(nx) || isNaN(ny) || isNaN(nz))
+		  return;
+
+		/*console.log("mouse wheel ending");
+		eye[0] = nx;
+		eye[1] = ny;
+		eye[2] = nz;*/
+	};
+};

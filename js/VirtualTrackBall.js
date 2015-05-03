@@ -1,67 +1,89 @@
 /**
- * 
+ * VirtualTrackBall object.
  */
 
 VirtualTrackBall = function(){};
 
 VirtualTrackBall.prototype = {
 
-	setWinSize:function(width, height){
+	default_acuteness : 10.0,
+	
+	/**
+	* Set up the canvas size using the min value between canvas 
+	* width and height to be our sphere radius.
+	*/
+	setCanvasSize: function(width, height){
 		this.width = width;
 		this.height = height;
-		this.r = this.min(width, height)/2;
-		this.q = new Quaternion();
+		
+		var min = width > height ? height : width;
+		this.radius = min / 2;
+		
+		this.quaternion = new Quaternion();
 		this.start;
 	},
 	
-	getTrackBallVector:function(win_x, win_y){
-		var x,y,z;
-		x = (2.0*win_x-this.width)/this.width;
-		y = (this.height-2.0*win_y)/this.height;
-		z = 0;
-		
-		var v = vec3(x, y, z);
+	/**
+	* Create a track ball vector according the x and y position.
+	*/
+	getTrackBallVector: function(win_x, win_y){
+		var x = (2.0 * win_x - this.width) / this.width;
+		var y = (this.height - 2.0 * win_y) / this.height;
+				
+		var v = vec3(x, y, 0);
 		var len = lengthOf(v);
-		len = (len<1.0) ? len : 1.0;
-		z = Math.sqrt(1-len*len);
+		len = (len < 1.0) ? len : 1.0;
+		var z = Math.sqrt(1 - len * len);
 		v[2] = z;
 		
 		return normalize(v);
 	},
 	
-	//get start position and create track ball vector for start position
-	setRotationStart:function(win_x, win_y){
-		this.start = this.getTrackBallVector(win_x, win_y);
+	/**
+	* Create track ball vector for start position.
+	*/
+	setRotationStart: function(x, y){
+		this.start = this.getTrackBallVector(x, y);
 	},
 	
-	
-	//get new position, create track ball vector, and base on the old vector and new vector,
-	//calculate the rotation axial, and angle
-	rotateTo:function(win_x, win_y){
-		var end = this.getTrackBallVector(win_x, win_y);
+	/**
+	* Create a new track ball vector based on the end x and y position, generate
+	* a quaternion from the axis and angle realized between end and start vectors.
+	* Finally, multiply this quaternion with the current 'quaternion' object
+	* to rotate to the target position.
+	*/
+	rotateTo: function(targetX, targetY){
+		var end = this.getTrackBallVector(targetX, targetY);
 		var axis = normalize(cross(end, this.start));
-		var dis = 0 - (lengthOf(subtract(end, this.start))*2);
+		var angle = 0 - (lengthOf(subtract(end, this.start)) * 2);
 		
-		var curRP = new Quaternion();
-		curRP.setFromAxisAngle(axis, dis);
+		var axisAngleQuat = new Quaternion();
+		axisAngleQuat.set(axis, angle);
 		
-		this.q = curRP.multiply(this.q);
-		this.start=end;
+		this.quaternion = Quaternion.multiply(axisAngleQuat, this.quaternion);
+		this.start = end;
 	},
 	
-	//convert it to Quaternion, and merger to the old one, convert to matrix and return
-	getRotationMatrix:function(){
+	/**
+	* Check if the quaternion object is valid and generate a matrix from it.
+	* Return the identity matrix otherwise.
+	*/
+	getRotationMatrix: function(){
 		var temp = mat4();
-		if(this.q===null || this.q===undefined){
+		if(this.quaternion==null || this.quaternion==undefined)
 			return temp;
-		}
-		return this.q.makeRotationFromQuaternion();
+
+		return Quaternion.getMatrixFromQuaternion(this.quaternion);
 	},
 	
-	min:function(x, y){
-		if (x > y)
-			return y;
-		return x;
-	},
+	getZoomFactor: function(acuteness, zoomIn) {
+		if (acuteness==null || acuteness==undefined)
+			acuteness = default_acuteness;
+
+		if (zoomIn)
+			return 1.0 + 1.0 / acuteness;
+		
+		return 1.0 - 1.0 / acuteness;
+	}
 
 };
