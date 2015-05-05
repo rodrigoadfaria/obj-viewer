@@ -55,6 +55,15 @@ VirtualTrackBall.prototype = {
 	rotateTo: function(targetX, targetY){
 		var end = this.getTrackBallVector(targetX, targetY);
 		var axis = normalize(cross(end, this.start));
+		
+		//FIXME: find out what is causing this NAN in the cross product/normalize
+		if (isNaN(axis[0]))
+			axis[0] = 0;
+		if (isNaN(axis[1]))
+			axis[1] = 0;
+		if (isNaN(axis[2]))
+			axis[2] = 0;
+			
 		var angle = 0 - (lengthOf(subtract(end, this.start)) * 2);
 		
 		var axisAngleQuat = new Quaternion();

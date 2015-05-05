@@ -29,6 +29,23 @@ Quaternion.prototype = {
 		this.w = Math.cos(theta / 2);
 		return this;
 	},
+	
+	/**
+	* Multiply the given quaternion to this object.
+	*
+	* @reference http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
+	*/
+	mult: function(quatb) {
+		var qax = this.x, qay = this.y, qaz = this.z, qaw = this.w;
+		var qbx = quatb.x, qby = quatb.y, qbz = quatb.z, qbw = quatb.w;
+
+		this.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
+		this.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
+		this.z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
+		this.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
+
+		return this;
+	}
 };
 
 /**

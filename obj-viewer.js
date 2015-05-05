@@ -278,8 +278,8 @@ var render = function() {
             
     /*eye = vec3(cradius * Math.sin(ctheta) * Math.cos(cphi),
                cradius * Math.sin(ctheta) * Math.sin(cphi), 
-               cradius * Math.cos(ctheta));
-	//eye = vec3(0.0, 0.0, 7.0);*/
+               cradius * Math.cos(ctheta));*/
+	eye = vec3(0.0, 0.0, 7.0);
 
     modelViewMatrix = lookAt(eye, at, up);
 
@@ -440,7 +440,7 @@ function setupCanvasMouseEvents() {
 	canvas.addEventListener("mousedown", this.mouseDownListener(), false);
 	canvas.addEventListener("mouseup", this.mouseUpListener(), false);
 	canvas.addEventListener("mousemove", this.mouseMoveListener(), false);
-	canvas.addEventListener("mousewheel", this.mouseWheelListener(), false );
+	//canvas.addEventListener("mousewheel", this.mouseWheelListener(), false );
 };
 
 /**
