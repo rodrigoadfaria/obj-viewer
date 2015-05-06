@@ -85,14 +85,24 @@ VirtualTrackBall.prototype = {
 		return Quaternion.getMatrixFromQuaternion(this.quaternion);
 	},
 	
-	getZoomFactor: function(acuteness, zoomIn) {
-		if (acuteness==null || acuteness==undefined)
-			acuteness = default_acuteness;
-
-		if (zoomIn)
-			return 1.0 + 1.0 / acuteness;
+	/**
+	* Get the zoom factor based on the field of view
+	* and an offset delta.
+	* We use a a ratio to control the velocity of the zoom.
+	*/
+	getZoomFactor: function(fov, delta) {
+		if (fov != null && fov != undefined) {
+			delta = 0.1 * (( delta > 0) ? 1 : -1);
+			
+			fov += delta * (10 / fovy);
+		}
 		
-		return 1.0 - 1.0 / acuteness;
+		if (fov < 0.0)
+			fov = 0.5;
+		else if (fov > 60.0)
+			fov = 60.0;
+		
+		return fov;
 	}
 
 };

@@ -31,12 +31,7 @@ var modelViewMatrixLoc, projectionMatrixLoc;
 //var ctm;
 var ambientColor, diffuseColor, specularColor;
 
-var xAxis = 0;
-var yAxis = 1;
-var zAxis = 2;
-var axis = 1;
 var theta = [0, 0, 0];
-
 var thetaLoc;
 
 // camera definitions
@@ -48,13 +43,17 @@ var cradius = 1.0;
 var ctheta = 0.0;
 var cphi = 0.0;
 
-// our universe
+// our universe orthographic view
 var xleft = -1.0;
 var xright = 1.0;
 var ybottom = -1.0;
 var ytop = 1.0;
 var znear = -100.0;
 var zfar = 100.0;
+
+// our universe perspective view
+var  fovy = 10.0;  // Field-of-view in Y direction angle (in degrees)
+var  aspect = 1.0;       // Viewport aspect ratio
 
 var flag = true;
 
@@ -186,7 +185,7 @@ function init() {
 * Prepare the elements of the page to listen to the needed events.
 */
 function prepareElements(initObj) {
-	setupRotation();
+	setupProjectionType();
 	
 	var btnShadingVertex = $("#shading-vertex");
 	var btnShadingFragment = $("#shading-fragment");
@@ -265,6 +264,7 @@ function resizeCanvas() {
 	
 	canvas.style.width = width / 1.25   + 'px';
 	canvas.style.height = height / 1.25 + 'px';
+	aspect = canvas.width/canvas.height;
 }
 
 /**
@@ -274,29 +274,20 @@ function resizeCanvas() {
 var render = function() {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
             
-    theta[axis] += 1.0;
-            
-    /*eye = vec3(cradius * Math.sin(ctheta) * Math.cos(cphi),
-               cradius * Math.sin(ctheta) * Math.sin(cphi), 
-               cradius * Math.cos(ctheta));*/
-	eye = vec3(0.0, 0.0, 7.0);
-
     modelViewMatrix = lookAt(eye, at, up);
 
 	modelViewMatrix = mult(modelViewMatrix, genScale([OBJ.mov_matrix.scale, OBJ.mov_matrix.scale, OBJ.mov_matrix.scale]));
     modelViewMatrix = mult(modelViewMatrix, translate([-OBJ.mov_matrix.x, -OBJ.mov_matrix.y, -OBJ.mov_matrix.z]));
-	
-	/*modelViewMatrix = mult(modelViewMatrix, rotate(theta[xAxis], [1, 0, 0] ));
-    modelViewMatrix = mult(modelViewMatrix, rotate(theta[yAxis], [0, 1, 0] ));
-    modelViewMatrix = mult(modelViewMatrix, rotate(theta[zAxis], [0, 0, 1] ));*/
     
 	var vtrm = virtualTB.getRotationMatrix();
 	modelViewMatrix = mult(modelViewMatrix, vtrm);
-	
-    projectionMatrix = ortho(xleft, xright, ybottom, ytop, znear, zfar);
-	perspectiveMatrix = perspective(30, canvas.width / canvas.height, 0.1, zfar);
 
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	if ($("#btn-perspective").hasClass("active"))
+		projectionMatrix = perspective(fovy, aspect, znear, zfar);
+	else
+		projectionMatrix = ortho(xleft, xright, ybottom, ytop, znear, zfar);
+    
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
 
     if (glDraw == GL_DRAW.TRIANGLES)
@@ -351,38 +342,30 @@ function toggleShader(initObj) {
 /**
 * Set up the rotation event buttons.
 */
-function setupRotation() {
-	var btnToggleRotation = $("#btn-toggle-rotation");
-	var btnX = $("#btn-x");
-	var btnY = $("#btn-y");
-	var btnZ = $("#btn-z");
+function setupProjectionType() {
+	var btnOrtho = $("#btn-ortho");
+	var btnPersp = $("#btn-perspective");
 	
-	btnX.click(function() {
-		axis = xAxis;
-		btnX.addClass('active');
-		btnY.removeClass('active');
-		btnZ.removeClass('active');
-	});
-	btnY.click(function() {
-		axis = yAxis;
-		btnX.removeClass('active');
-		btnY.addClass('active');
-		btnZ.removeClass('active');
+	btnOrtho.click(function() {
+		btnOrtho.addClass('active');
+		btnPersp.removeClass('active');
+			
+		znear = -100;
+		eye = vec3(1.0, 0.0, 0.0);
 
+		init();
 	});
-	btnZ.click(function() {
-		axis = zAxis;
-		btnX.removeClass('active');
-		btnY.removeClass('active');
-		btnZ.addClass('active');
-	});
-    
-	btnToggleRotation.click(function(){
-		btnToggleRotation.addClass('active');
-		flag = !flag;
-		if (flag)
-			btnToggleRotation.removeClass('active');
-	});
+	
+	btnPersp.click(function() {
+		btnOrtho.removeClass('active');
+		btnPersp.addClass('active');
+
+		znear = 0.1;
+		eye = vec3(0.0, 0.0, 30.0);
+		
+		init();
+	});	
+	
 };
 
 /**
@@ -423,7 +406,6 @@ function loadObject(data, fileName) {
 		projectionMatrix = null;
 		modelViewMatrixLoc = null;
 		projectionMatrixLoc = null;
-		theta = [0, 0, 0];
 		
 		$("#file-name").text(fileName);
 		isStart = false;
@@ -440,7 +422,7 @@ function setupCanvasMouseEvents() {
 	canvas.addEventListener("mousedown", this.mouseDownListener(), false);
 	canvas.addEventListener("mouseup", this.mouseUpListener(), false);
 	canvas.addEventListener("mousemove", this.mouseMoveListener(), false);
-	//canvas.addEventListener("mousewheel", this.mouseWheelListener(), false );
+	canvas.addEventListener("mousewheel", this.mouseWheelListener(), false );
 };
 
 /**
@@ -485,28 +467,10 @@ function mouseWheelListener() {
 	return function(event) {
 		var d = ((typeof event.wheelDelta != "undefined") ? 
 			(-event.wheelDelta) : event.detail);
-		d = 100 * (( d > 0) ? 1 : -1);
+		d = 0.1 * (( d > 0) ? 1 : -1);
 
-		var cPos = new Object();
-		cPos.x = eye[0], cPos.y = eye[1], cPos.z = eye[2];
-		if (isNaN(cPos.x) || isNaN(cPos.y) || isNaN(cPos.y))
-		  return;
-
-		var r = cPos.x*cPos.x + cPos.y*cPos.y;
-		var sqr = Math.sqrt(r);
-		var sqrZ = Math.sqrt(cPos.z*cPos.z + r);
-
-
-		var nx = cPos.x + ((r==0)?0:(d * cPos.x/sqr));
-		var ny = cPos.y + ((r==0)?0:(d * cPos.y/sqr));
-		var nz = cPos.z + ((sqrZ==0)?0:(d * cPos.z/sqrZ));
-
-		if (isNaN(nx) || isNaN(ny) || isNaN(nz))
-		  return;
-
-		/*console.log("mouse wheel ending");
-		eye[0] = nx;
-		eye[1] = ny;
-		eye[2] = nz;*/
+		fovy = virtualTB.getZoomFactor(fovy, d);
+		console.log(fovy);
+		render();
 	};
 };

@@ -188,7 +188,7 @@ dt {
   width: 33.333%;
 }
 
-#shading-vertex, #shading-fragment, #shading-flat, #shading-smooth, #btn-triangles, #btn-lines {
+#shading-vertex, #shading-fragment, #shading-flat, #shading-smooth, #btn-triangles, #btn-lines, #btn-perspective, #btn-ortho {
   width: 50%;
 }
 

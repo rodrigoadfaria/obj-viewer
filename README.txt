@@ -34,13 +34,7 @@ MAN
   [Load OBJ file...] read a .obj file with the description of faces, vertices, normals and object name.
   Some commands such as 'mtllib', 'usemtl', are not being read.
   
-  [Rotate X] rotate the object in X axis.
-  
-  [Rotate Y] rotate the object in Y axis.
-  
-  [Rotate Z] rotate the object in Z axis.
-  
-  [Toggle rotation] stop the current rotation independently of the axis.
+  [Projection Ortographic/Perspective] toggle between ortographic and perspective projection.
   
   [Shader Vertex/Fragment] toggle between two different shaders. This option stop the current vertex/fragment shaders
   and load a new one with different shading algorithm.
@@ -48,6 +42,10 @@ MAN
   [Mesh Flat/Smooth] toggle the method of shading from flat to smooth and vice versa.
   
   [Draw Triangles/Lines] toggle the method of drawing from triangles to line strip and vice versa.
+  
+  [Rotation] rotate the scene by holding the left click and drag to any direction.
+  
+  [Zoom in/out] zoom in/out the scene by rolling the mouse wheel.
 
 CONTACT
 -------
