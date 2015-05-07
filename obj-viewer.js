@@ -35,7 +35,7 @@ var theta = [0, 0, 0];
 var thetaLoc;
 
 // camera definitions
-var eye = vec3(1.0, 0.0, 0.0);
+var eye = vec3(0.0, 0.0, 30.0);
 var at = vec3(0.0, 0.0, 0.0);
 var up = vec3(0.0, 1.0, 0.0);
 
@@ -48,7 +48,7 @@ var xleft = -1.0;
 var xright = 1.0;
 var ybottom = -1.0;
 var ytop = 1.0;
-var znear = -100.0;
+var znear = 0.1;
 var zfar = 100.0;
 
 // our universe perspective view
@@ -127,7 +127,12 @@ function init() {
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
-    // create viewport and clear color
+    // disable the context menu when right click is pressed
+	canvas.oncontextmenu = function() {
+		return false;  
+	};
+	
+	// create viewport and clear color
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 0.5, 0.5, 0.5, 1.0 );
     
@@ -294,9 +299,6 @@ var render = function() {
 		gl.drawArrays( gl.TRIANGLES, 0, OBJ.vertices.length);
 	else if (glDraw == GL_DRAW.LINE_STRIP)
 		gl.drawArrays(gl.LINE_STRIP, 0, OBJ.vertices.length);
-            
-    //if (flag) 
-		//animID = requestAnimFrame(render);
 }
 
 /**
@@ -352,7 +354,7 @@ function setupProjectionType() {
 			
 		znear = -100;
 		eye = vec3(1.0, 0.0, 0.0);
-
+		
 		init();
 	});
 	
@@ -449,28 +451,46 @@ function mouseUpListener() {
 
 /**
 * Mouse move event listener used to keep tracking the user movements
-* in the canvas area and rotate the scene according it.
+* in the canvas area and rotate/scale the scene according it.
 */
+var tempMouseY = 0;
 function mouseMoveListener() {
 	return function(event) {
 		if (virtualTB.mousedown == true) {
-			var rect = canvas.getBoundingClientRect();
-			var x = event.clientX - rect.left;
-			var y = event.clientY - rect.top;
-			virtualTB.rotateTo(x, y);
+			if (event.button === 2 || event.buttons === 2) {//right click
+				if ($("#btn-perspective").hasClass("active")) {
+					var direction = event.pageY > tempMouseY;
+					
+					tempMouseY = event.pageY;
+					var d = 1;
+					if (direction)
+						d = -1;
+
+					fovy = virtualTB.getZoomFactor(fovy, d, znear, zfar);
+				}
+			} else {
+				var rect = canvas.getBoundingClientRect();
+				var x = event.clientX - rect.left;
+				var y = event.clientY - rect.top;
+				virtualTB.rotateTo(x, y);
+			}
+			
 			render();
 		}
-	};
+	}
 };
 
+/**
+* Mouse wheel event listener used to keep tracking the mouse middle button 
+* user movements in the canvas area and scale the scene according it.
+*/
 function mouseWheelListener() {
 	return function(event) {
 		var d = ((typeof event.wheelDelta != "undefined") ? 
 			(-event.wheelDelta) : event.detail);
-		d = 0.1 * (( d > 0) ? 1 : -1);
+		d = ( d > 0) ? 1 : -1;
 
-		fovy = virtualTB.getZoomFactor(fovy, d);
-		console.log(fovy);
+		fovy = virtualTB.getZoomFactor(fovy, d, znear, zfar);
 		render();
 	};
 };

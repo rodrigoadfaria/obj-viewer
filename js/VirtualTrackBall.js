@@ -45,7 +45,7 @@ VirtualTrackBall.prototype = {
 	setRotationStart: function(x, y){
 		this.start = this.getTrackBallVector(x, y);
 	},
-	
+
 	/**
 	* Create a new track ball vector based on the end x and y position, generate
 	* a quaternion from the axis and angle realized between end and start vectors.
@@ -90,18 +90,17 @@ VirtualTrackBall.prototype = {
 	* and an offset delta.
 	* We use a a ratio to control the velocity of the zoom.
 	*/
-	getZoomFactor: function(fov, delta) {
+	getZoomFactor: function(fov, delta, znear, zfar) {
 		if (fov != null && fov != undefined) {
 			delta = 0.1 * (( delta > 0) ? 1 : -1);
+			delta = delta * (10 / fov);
 			
-			fov += delta * (10 / fovy);
+			var prevFov = fov;
+			fov += delta;
+			if ((fov <= znear * 50) || (fov >= zfar / 2))
+				fov = prevFov;
 		}
-		
-		if (fov < 0.0)
-			fov = 0.5;
-		else if (fov > 60.0)
-			fov = 60.0;
-		
+
 		return fov;
 	}
 

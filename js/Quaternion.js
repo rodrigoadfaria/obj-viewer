@@ -27,7 +27,8 @@ Quaternion.prototype = {
 		this.y = axis[1] * s;
 		this.z = axis[2] * s;
 		this.w = Math.cos(theta / 2);
-		return this;
+		
+		return this.normalize();
 	},
 	
 	/**
@@ -44,6 +45,22 @@ Quaternion.prototype = {
 		this.z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
 		this.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
 
+		return this.normalize();
+	},
+	
+	/**
+	* Normalize this quaternion object.
+	*
+	* @reference http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
+	*/
+	normalize: function() {
+		var n = Math.sqrt(this.x*this.x + this.y*this.y + 
+						  this.z*this.z + this.w*this.w);
+		this.x /= n;
+		this.y /= n;
+		this.z /= n;
+		this.w /= n;
+		
 		return this;
 	}
 };
@@ -64,7 +81,7 @@ Quaternion.multiply = function ( q1, q2 ) {
 	quat.z =  q1.x * q2.y - q1.y * q2.x + q1.z * q2.w + q1.w * q2.z;
 	quat.w = -q1.x * q2.x - q1.y * q2.y - q1.z * q2.z + q1.w * q2.w;
 
-	return quat;
+	return quat.normalize();
 };
 
 /**

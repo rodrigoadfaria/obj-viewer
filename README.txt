@@ -1,4 +1,4 @@
-__  __            _____  ___   _  _  ___    ___           _____  ______  _  _    _  _                    
+  __  __            _____  ___   _  _  ___    ___           _____  ______  _  _    _  _                    
  |  \/  |    /\    / ____|/ _ \ | || ||__ \  / _ \         | ____||____  || || |  | || |                   
  | \  / |   /  \  | |    | | | || || |_  ) || | | | ______ | |__      / / | || |_ | || |_                  
  | |\/| |  / /\ \ | |    | | | ||__   _|/ / | | | ||______||___ \    / /  |__   _||__   _|                 
@@ -16,14 +16,14 @@ __  __            _____  ___   _  _  ___    ___           _____  ______  _  _   
 
 README
 ------
-  OBJ viewer is a web tool capable of load and render a 3D object defined by a modeling tool such as
+  OBJ viewer is a web tool capable of load and render a 3D object defined by a modelling tool such as
   Blender, Maya, and others. Find out how to use this tool in the man section of this file.
 
 CONFIG
 ------
   You do not need any previous configuration to run the application, just use a web browser that supports
   HTML5 canvas and WebGL technology.
-  The only thing you need is to look for .obj files or create them using a modeling tool like those
+  The only thing you need is to look for .obj files or create them using a modelling tool like those
   mentioned in the previous section. In the 'sample_obj' directory, you can find a sample .obj file.
 
 MAN
@@ -34,7 +34,7 @@ MAN
   [Load OBJ file...] read a .obj file with the description of faces, vertices, normals and object name.
   Some commands such as 'mtllib', 'usemtl', are not being read.
   
-  [Projection Ortographic/Perspective] toggle between ortographic and perspective projection.
+  [Projection Orthographic/Perspective] toggle between orthographic and perspective projection.
   
   [Shader Vertex/Fragment] toggle between two different shaders. This option stop the current vertex/fragment shaders
   and load a new one with different shading algorithm.
@@ -43,9 +43,10 @@ MAN
   
   [Draw Triangles/Lines] toggle the method of drawing from triangles to line strip and vice versa.
   
-  [Rotation] rotate the scene by holding the left click and drag to any direction.
+  [Rotation] rotate the scene by holding the left click and dragging to any direction.
   
-  [Zoom in/out] zoom in/out the scene by rolling the mouse wheel.
+  [Zoom in/out] zoom in/out the scene by rolling the mouse wheel or by holding the right click and 
+  dragging to any direction.
 
 CONTACT
 -------
