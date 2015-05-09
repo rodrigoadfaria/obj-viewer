@@ -122,6 +122,7 @@ void main() {
 
 <script type="text/javascript" src="./js/VirtualTrackBall.js"></script>
 <script type="text/javascript" src="./js/Quaternion.js"></script>
+<script type="text/javascript" src="./js/Scene.js"></script>
 
 <script type="text/javascript" src="obj-reader.js"></script>
 <script type="text/javascript" src="obj-viewer.js"></script>
@@ -141,14 +142,7 @@ void main() {
 					<span class="btn-group">
 						<input type="file" id="files" name="files[]" accept=".obj,"></input>
 						<button class="btn" id="btn-load-file">Load OBJ file...</button>
-						<span id="file-name">default_cube.obj</span>
-					</span>
-				</dt>
-				<dt>
-					<h4>PROJECTION</h4>
-					<span class="btn-group">
-						<button class="btn" id="btn-ortho">Orthographic</button>
-						<button class="btn active" id="btn-perspective">Perspective</button>
+						<span id="file-name"></span>
 					</span>
 				</dt>
 				<dt>

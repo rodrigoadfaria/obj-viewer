@@ -34,8 +34,6 @@ MAN
   [Load OBJ file...] read a .obj file with the description of faces, vertices, normals and object name.
   Some commands such as 'mtllib', 'usemtl', are not being read.
   
-  [Projection Orthographic/Perspective] toggle between orthographic and perspective projection.
-  
   [Shader Vertex/Fragment] toggle between two different shaders. This option stop the current vertex/fragment shaders
   and load a new one with different shading algorithm.
   
