@@ -114,9 +114,6 @@ function init() {
     
     render();
 	$('.overlay').hide();
-	if($.browser.msie){
-	   $('.overlay').css({"visibility":"hidden"});
-	}
 }
 
 /**
