@@ -184,11 +184,7 @@ dt {
   box-shadow: inset 0 2px 2px rgba(0,0,0,0.1);
 }
 
-#btn-x, #btn-y, #btn-z {
-  width: 33.333%;
-}
-
-#shading-vertex, #shading-fragment, #shading-flat, #shading-smooth, #btn-triangles, #btn-lines, #btn-perspective, #btn-ortho {
+#shading-vertex, #shading-fragment, #shading-flat, #shading-smooth, #btn-triangles, #btn-lines {
   width: 50%;
 }
 
@@ -207,4 +203,18 @@ dt {
 
 #files {
   display: none;
+}
+
+.overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: rgba( 255, 255, 255, .8 ) 
+              url('loading.gif') 
+              50% 50% 
+              no-repeat;
 }

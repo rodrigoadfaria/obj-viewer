@@ -14,19 +14,36 @@ Scene.prototype = {
 	
 	/**
 	* Add an object to the scene according to the shader chosen by the user.
-	* For each object, we keep a buffer for it to control it independently.
+	* For each object, we generate a scale and translation matrix and put it
+	* into the modelMatrix to be rendered.
 	*/
 	add: function(object) {
 		if (object) {
-			var normals = object.normals;
+			object.draw_normals = object.normals;
 			if (this.isSmoothShading)
-				normals = object.smooth_normals;
+				object.draw_normals = object.smooth_normals;
 			
-			var bufferObj = this.createBuffers(object.vertices, normals);
-			if (bufferObj) {
-				this.buffers.push(bufferObj);
-				this.meshes.push(object);
-			}
+			object.scale = genScale([object.mov_matrix.scale, object.mov_matrix.scale, object.mov_matrix.scale]);
+			object.translation = translate([-object.mov_matrix.x, -object.mov_matrix.y, -object.mov_matrix.z]);
+			
+			object.modelMatrix = object.scale;
+			object.modelMatrix = mult(object.modelMatrix, object.translation);
+			
+			this.meshes.push(object);
+		}
+	},
+	
+	/**
+	* Remove the mesh object and vertices/normals buffers according to the
+	* given index.
+	*/
+	remove: function(index) {
+		if (index >= 0 && index < this.meshes.length && index < this.buffers.length) {
+			var rBuffer = this.buffers.splice(index);
+			var rObject = this.meshes.splice(index);
+			
+			gl.deleteBuffer(rBuffer.nBuffer);
+			gl.deleteBuffer(rBuffer.vBuffer);
 		}
 	},
 	
@@ -66,7 +83,7 @@ Scene.prototype = {
 		
 		var buffer = new Buffer(vBuffer, nBuffer);
 		return buffer;
-	},
+	}
 };
 
 /**

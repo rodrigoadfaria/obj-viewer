@@ -17,15 +17,16 @@ uniform vec4 diffuseProduct;
 uniform vec4 specularProduct;
 uniform float shininess;
 
-uniform mat4 modelViewMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
 uniform mat4 projectionMatrix;
 
 uniform vec4 lightPosition;
 
 void main() {
-    vec3 pos = -(modelViewMatrix * vPosition).xyz;
+    vec3 pos = -(viewMatrix * vPosition).xyz;
     
-    // fixed light postion
+    // fixed light position
     vec3 light = lightPosition.xyz;
     vec3 L = normalize( light - pos );
 
@@ -33,7 +34,7 @@ void main() {
     vec3 H = normalize( L + E );
 
     // transform vertex normal into eye coordinates
-    vec3 N = normalize( (modelViewMatrix * vNormal).xyz );
+    vec3 N = normalize( (viewMatrix * vNormal).xyz );
 
     // compute terms in the illumination equation
     vec4 ambient = ambientProduct;
@@ -48,9 +49,9 @@ void main() {
 	   specular = vec4(0.0, 0.0, 0.0, 1.0);
     } 
 
-    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vPosition;
     
-    fColor = ambient + diffuse +specular;
+    fColor = ambient + diffuse + specular;
     
     fColor.a = 1.0;
 }
@@ -74,17 +75,18 @@ attribute vec4 vNormal;
 
 varying vec3 N, L, E;
 
-uniform mat4 modelViewMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
 uniform mat4 projectionMatrix;
 uniform vec4 lightPosition;
 
 void main() {
-	vec3 pos = -(modelViewMatrix * vPosition).xyz;
+	vec3 pos = -(viewMatrix * vPosition).xyz;
 	vec3 light = lightPosition.xyz;
 	L = normalize( light - pos );
 	E = normalize( -pos );
-	N = normalize( (modelViewMatrix * vNormal).xyz );
-	gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+	N = normalize( (viewMatrix * vNormal).xyz );
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vPosition;
 }
 </script>
 
@@ -128,6 +130,8 @@ void main() {
 <script type="text/javascript" src="obj-viewer.js"></script>
 
 <body>
+	<div class="overlay"></div>
+	
 	<div id="header">
 		<span class="title">MAC0420-5744</span>
 		<span class="sub-title">Computer Graphics</span>
@@ -171,12 +175,12 @@ void main() {
 		</nav>
 		
 		<div class="info">
-			<p>Institute of Mathematics ans Statistics - University of Sao Paulo <a href="https://www.ime.usp.br/">>></a></p>
+			<p>Institute of Mathematics and Statistics - University of Sao Paulo <a href="https://www.ime.usp.br/">>></a></p>
 		</div>
 	</div>
 		
 	<div id="main">
-		<canvas id="gl-canvas" width="768" height="768">
+		<canvas id="gl-canvas" width="768" height="768" tabindex="1">
 		Oops ... your browser doesn't support the HTML5 canvas element
 		</canvas>
 	</div>
