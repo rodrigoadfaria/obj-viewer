@@ -205,6 +205,37 @@ dt {
   display: none;
 }
 
+#m-content-none, #m-content-rotate, #m-content-translate, #m-content-scale {
+  display: none;
+}
+
+.floating {
+  float: left;
+  margin: 70px 8px;
+  background-color: #d9dce0;
+  color: #38393d;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  display: none;
+  padding: 8px;
+  font-size: 12px;
+  position: absolute;
+  top: 0; 
+  width: 180px;
+}
+
+.floating .title {
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  display: block;
+  font-size: 14px;
+  padding-bottom: 5px;
+  margin-bottom: 8px;
+}
+
+.m-type {
+  font-weight: bold;
+}
+
 .overlay {
   display: none;
   position: absolute;

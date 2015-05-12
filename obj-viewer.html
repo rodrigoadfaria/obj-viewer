@@ -125,6 +125,7 @@ void main() {
 <script type="text/javascript" src="./js/VirtualTrackBall.js"></script>
 <script type="text/javascript" src="./js/Quaternion.js"></script>
 <script type="text/javascript" src="./js/Scene.js"></script>
+<script type="text/javascript" src="./js/Manipulator.js"></script>
 
 <script type="text/javascript" src="obj-reader.js"></script>
 <script type="text/javascript" src="obj-viewer.js"></script>
@@ -180,9 +181,43 @@ void main() {
 	</div>
 		
 	<div id="main">
-		<canvas id="gl-canvas" width="768" height="768" tabindex="1">
+		<canvas id="gl-canvas" width="1600" height="768" tabindex="1">
 		Oops ... your browser doesn't support the HTML5 canvas element
 		</canvas>
+
+		<div id="manipulator" class="floating">
+			<span class="title">Manipulator</span>
+			
+			<div id="m-content-none" class="man-content">
+				<span class="m-type">NONE</span>
+				<div>press T to translate, S to scale, R to rotate</div>
+			</div>
+			
+			<div id="m-content-rotate" class="man-content">
+				<span class="m-type">ROTATE</span>
+				<div>
+					<div>the offset here</div>
+					<div>press X, Y, or Z to select an axis</div>
+				</div>
+			</div>
+			
+			<div id="m-content-translate" class="man-content">
+				<span class="m-type">TRANSLATE</span>
+				<div>
+					<div>the offset here</div>
+					<div>press X, Y, or Z to select an axis</div>
+				</div>
+			</div>
+			
+			<div id="m-content-scale" class="man-content">
+				<span class="m-type">SCALE</span>
+				<div>
+					<div>the offset here</div>
+					<div>press X, Y, or Z to select an axis</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 </body>

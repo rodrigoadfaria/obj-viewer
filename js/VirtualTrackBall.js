@@ -93,7 +93,7 @@ VirtualTrackBall.prototype = {
 	getZoomFactor: function(fov, delta, znear, zfar) {
 		if (fov != null && fov != undefined) {
 			delta = (( delta > 0) ? 1 : -1);
-			delta = delta * (0.1 / fov);
+			delta = delta * (1 / fov);
 			
 			var prevFov = fov;
 			fov += delta;

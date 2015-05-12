@@ -255,6 +255,12 @@ OBJDoc.prototype.parseResult = function() {
 	tMatrix.z = (tMatrix.max_z - Math.abs(tMatrix.min_z)) / 2;;
 	tMatrix.generateScaleFactor();
 	objInfo.mov_matrix = tMatrix;
+
+	objInfo.scale = genScale([objInfo.mov_matrix.scale, objInfo.mov_matrix.scale, objInfo.mov_matrix.scale]);
+	objInfo.translation = translate([-objInfo.mov_matrix.x, -objInfo.mov_matrix.y, -objInfo.mov_matrix.z]);
+	
+	objInfo.modelMatrix = objInfo.scale;
+	objInfo.modelMatrix = mult(objInfo.modelMatrix, objInfo.translation);	
 	
 	return objInfo;
 }

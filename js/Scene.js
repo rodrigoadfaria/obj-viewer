@@ -23,12 +23,6 @@ Scene.prototype = {
 			if (this.isSmoothShading)
 				object.draw_normals = object.smooth_normals;
 			
-			object.scale = genScale([object.mov_matrix.scale, object.mov_matrix.scale, object.mov_matrix.scale]);
-			object.translation = translate([-object.mov_matrix.x, -object.mov_matrix.y, -object.mov_matrix.z]);
-			
-			object.modelMatrix = object.scale;
-			object.modelMatrix = mult(object.modelMatrix, object.translation);
-			
 			this.meshes.push(object);
 		}
 	},
