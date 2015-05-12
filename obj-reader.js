@@ -258,9 +258,11 @@ OBJDoc.prototype.parseResult = function() {
 
 	objInfo.scale = genScale([objInfo.mov_matrix.scale, objInfo.mov_matrix.scale, objInfo.mov_matrix.scale]);
 	objInfo.translation = translate([-objInfo.mov_matrix.x, -objInfo.mov_matrix.y, -objInfo.mov_matrix.z]);
+   objInfo.rotate = mat4([1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]);
 	
 	objInfo.modelMatrix = objInfo.scale;
 	objInfo.modelMatrix = mult(objInfo.modelMatrix, objInfo.translation);	
+	objInfo.modelMatrix = mult(objInfo.modelMatrix, objInfo.rotate);	
 	
 	return objInfo;
 }

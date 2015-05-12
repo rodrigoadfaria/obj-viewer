@@ -58,6 +58,12 @@ var glDraw = GL_DRAW.TRIANGLES;
 var virtualTB;
 var manipulator;
 
+var startManipulator;
+var newMouseX;
+var newMouseY;
+var oldMouseX;
+var oldMouseY;
+
 window.onload = function initialize() {
 	scene = new Scene();
 	init();
@@ -348,10 +354,30 @@ function mouseMoveListener() {
 				if (manipulator.active) { //manipulating an object
 					// user already has taken a choice either transformation
 					// and axis
-					if (manipulator.type != null && manipulator.axis != null) {
-						var d = getMousMoveDirection(event);
+               newMouseX = 2 * ((event.pageX - rect.left)/rect.width) - 1;
+               newMouseY = 1 - 2 * ((event.pageY - rect.top)/rect.height);
+               if(startManipulator) {
+                  oldMouseX = newMouseX;
+                  oldMouseY = newMouseY;
+                  startManipulator = false;
+               }
+               if(oldMouseX != newMouseX) {
+                  if(oldMouseX < newMouseX)
+                     var d = 1;
+                  else
+                     var d = -1;
+               } else if(oldMouseY != newMouseY) {
+                  if(oldMouseY < newMouseY)
+                     var d = 1;
+                  else
+                     var d = -1;
+               } else
+                  var d = 0;
+
+					if (manipulator.type != null && manipulator.axis != null)
 						manipulator.apply(d);
-					}
+               oldMouseX = newMouseX;
+               oldMouseY = newMouseY;
 				} else {// manipulating the world
 					virtualTB.rotateTo(x, y);
 				}
@@ -373,7 +399,6 @@ function getMousMoveDirection (event) {
 		
 	return d;
 }
-
 /**
 * Mouse wheel event listener used to keep tracking the mouse middle button 
 * user movements in the canvas area and scale the scene according it.
@@ -404,6 +429,7 @@ function keyUpListener() {
 			if (manipulator.type != null) {//user already selected an axis
 				manipulator.setAxis(code);
 				manipulator.active = true;
+            startManipulator = true;
 			}
 		}
 		

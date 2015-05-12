@@ -1,4 +1,3 @@
-
 var Key = {
 	R: 82,
 	S: 83,
@@ -67,47 +66,80 @@ Manipulator.prototype = {
 	},
 	
 	apply: function(direction) {
-		var index = this.getActiveObjectIndex();
+      if(direction != 0){
+         var index = this.getActiveObjectIndex();
 
-		if (index >= 0) {
-			var object = scene.meshes[index];
-			var offset = new Object();
-			offset.x = 0, offset.y = 0, offset.z = 0;
-			
-			direction = (( direction > 0) ? 1 : -1);
-			var delta = direction * (0.1 / fovy);
-		
-			if (this.type == Key.T) {
-				if (this.axis == Key.X)
-					offset.x = delta;
-				if (this.axis == Key.Y)
-					offset.y = delta;
-				if (this.axis == Key.Z)
-					offset.z = delta;
-					
-				this.translate(object, offset);
-			} else if (this.type == Key.R) {
-				//rotate
-			} else if (this.type == Key.S) {
-				offset.x = 1, offset.y = 1, offset.z = 1;
-				if (this.axis == Key.X)
-					offset.x = delta;
-				if (this.axis == Key.Y)
-					offset.y = delta;
-				if (this.axis == Key.Z)
-					offset.z = delta;
-				
-				this.scale(object, offset);
-			} 
-			
-			render();
-		}
+         if (index >= 0) {
+            var object = scene.meshes[index];
+            var offset = new Object();
+            
+            if (this.type == Key.T) {
+               var maxT;
+               var minT;
+               var xT = object.translation[0][3];
+               var yT = object.translation[1][3];
+               var zT = object.translation[2][3];
+
+               offset.x = 0;
+               offset.y = 0;
+               offset.z = 0;
+
+               console.log(object.translation);
+               if(direction > 0)
+                  delta = 0.1;
+               else
+                  delta = -0.1;
+
+               if (this.axis == Key.X)
+                     offset.x = delta;
+               if (this.axis == Key.Y)
+                  offset.y = delta;
+               if (this.axis == Key.Z)
+                  offset.z = delta;
+                  
+               this.translate(object, offset, xT, yT, zT);
+            } else if (this.type == Key.R) {
+               var rot;
+               if(direction > 0)
+                  delta = 2;
+               else
+                  delta = -2;
+
+               if (this.axis == Key.X)
+                  rot = rotate(delta, [1, 0, 0]);
+               if (this.axis == Key.Y)
+                  rot = rotate(delta, [0, 1, 0]);
+               if (this.axis == Key.Z)
+                  rot = rotate(delta, [0, 0, 1]);
+
+               this.rotate(object, rot);
+            } else if (this.type == Key.S) {
+               offset.x = 1; 
+               offset.y = 1; 
+               offset.z = 1;
+               if(direction > 0)
+                  delta = 1.1;
+               else
+                  delta = 0.9;
+               if (this.axis == Key.X)
+                  offset.x *= delta;
+               if (this.axis == Key.Y)
+                  offset.y *= delta;
+               if (this.axis == Key.Z)
+                  offset.z *= delta;
+               
+               this.scale(object, offset);
+            } 
+            
+            render();
+         }
+      }
 	},
 	
-	translate: function(object, offset) {
+	translate: function(object, offset, xT, yT, zT) {
 		if (object) {
-			object.translation = translate(offset.x, offset.y, offset.z);
-			
+         //var translation = translate(offset.x, offset.y, offset.z);
+         object.translation = translate(offset.x + xT, offset.y + yT, offset.z + zT);
 			return this.updateMesh(object);
 		}
 	},
@@ -115,7 +147,15 @@ Manipulator.prototype = {
 	scale: function(object, offset) {
 		if (object) {
 			var scale = genScale(offset.x, offset.y, offset.z);
-			object.scale = add(object.scale, scale);
+			object.scale = mult(object.scale, scale);
+			
+			return this.updateMesh(object);
+		}
+	},
+
+	rotate: function(object, rot) {
+		if (object) {
+			object.rotate = mult(rot, object.rotate);
 			
 			return this.updateMesh(object);
 		}
@@ -124,7 +164,7 @@ Manipulator.prototype = {
 	updateMesh: function(obj) {
 		obj.modelMatrix = obj.scale;
 		obj.modelMatrix = mult(obj.modelMatrix, obj.translation);
-		
+		obj.modelMatrix = mult(obj.modelMatrix, obj.rotate);
 		return obj;
 	}
 };
