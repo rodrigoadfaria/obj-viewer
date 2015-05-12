@@ -66,6 +66,8 @@ var oldMouseY;
 
 window.onload = function initialize() {
 	scene = new Scene();
+	prepareObjectMenu();
+	
 	init();
 }
 
@@ -284,13 +286,16 @@ function setupFileLoad(evt) {
 
 /**
 * Call the parser to get the file content
-* and keep it in our OBJ variable.
+* and keep it in our obj variable.
 */
 function loadObject(data, fileName) {
-	OBJ = loadObjFile(data);
-	if (OBJ) {
-		scene.add(OBJ);
-		$("#file-name").text(fileName);
+	var obj = loadObjFile(data);
+	if (obj) {
+		scene.add(obj);
+		
+		obj.name = fileName;
+		appendObjItem(obj.name, obj.vertices.length, obj.faces.length);
+		
 		isStart = false;
 		init();
 	}	
@@ -354,30 +359,30 @@ function mouseMoveListener() {
 				if (manipulator.active) { //manipulating an object
 					// user already has taken a choice either transformation
 					// and axis
-               newMouseX = 2 * ((event.pageX - rect.left)/rect.width) - 1;
-               newMouseY = 1 - 2 * ((event.pageY - rect.top)/rect.height);
-               if(startManipulator) {
-                  oldMouseX = newMouseX;
-                  oldMouseY = newMouseY;
-                  startManipulator = false;
-               }
-               if(oldMouseX != newMouseX) {
-                  if(oldMouseX < newMouseX)
-                     var d = 1;
-                  else
-                     var d = -1;
-               } else if(oldMouseY != newMouseY) {
-                  if(oldMouseY < newMouseY)
-                     var d = 1;
-                  else
-                     var d = -1;
-               } else
-                  var d = 0;
+				   newMouseX = 2 * ((event.pageX - rect.left)/rect.width) - 1;
+				   newMouseY = 1 - 2 * ((event.pageY - rect.top)/rect.height);
+				   if(startManipulator) {
+					  oldMouseX = newMouseX;
+					  oldMouseY = newMouseY;
+					  startManipulator = false;
+				   }
+				   if(oldMouseX != newMouseX) {
+					  if(oldMouseX < newMouseX)
+						 var d = 1;
+					  else
+						 var d = -1;
+				   } else if(oldMouseY != newMouseY) {
+					  if(oldMouseY < newMouseY)
+						 var d = 1;
+					  else
+						 var d = -1;
+				   } else
+					  var d = 0;
 
-					if (manipulator.type != null && manipulator.axis != null)
-						manipulator.apply(d);
-               oldMouseX = newMouseX;
-               oldMouseY = newMouseY;
+						if (manipulator.type != null && manipulator.axis != null)
+							manipulator.apply(d);
+				   oldMouseX = newMouseX;
+				   oldMouseY = newMouseY;
 				} else {// manipulating the world
 					virtualTB.rotateTo(x, y);
 				}
@@ -419,8 +424,15 @@ function keyUpListener() {
 	return function(event) {
 		var code = (event.keyCode ? event.keyCode : event.which);
 		
+		var index = manipulator.getActiveObjectIndex();
+		var msg = "Select an object in the left menu or load an object file if none.";
+		
 		if (code == Key.T || code == Key.R || code == Key.S) {
-			manipulator.active = false;
+			if (index == -1) {
+				alert(msg)
+				return;
+			}
+
 			manipulator.setType(code);
 			manipulator.updateView();
 		}
@@ -429,14 +441,24 @@ function keyUpListener() {
 			if (manipulator.type != null) {//user already selected an axis
 				manipulator.setAxis(code);
 				manipulator.active = true;
-            startManipulator = true;
+				startManipulator = true;
+
+				manipulator.updateView();
 			}
 		}
 		
 		if (!manipulator.active) {
-			var index = manipulator.getActiveObjectIndex();
 			if (code == Key.DEL || code == Key.X) {
+				if (index == -1) {
+					alert(msg)
+					return;
+				}
+				
 				scene.remove(index);
+				manipulator.setActiveObjectIndex(-1);
+				rebuildList();
+				manipulator.updateView();
+				
 				render();
 			}
 		}
@@ -445,8 +467,56 @@ function keyUpListener() {
 			manipulator.type = null;
 			manipulator.axis = null;
 			manipulator.active = false;
+			manipulator.setActiveObjectIndex(-1);
 			
+			$('#exp-obj-list>li').removeClass('active');
 			manipulator.updateView();
 		}
 	};
 };
+
+function prepareObjectMenu() {
+	$('#exp-obj-list').find('li:has(ul)').click( function(event) {
+		if (this == event.target) {
+			$(this).toggleClass('expanded');
+			$(this).children('ul').toggle('medium');
+			
+			$('#exp-obj-list>li').removeClass('active');
+			if ($(this).hasClass('expanded')) {
+				var idx = $(this).index();
+				manipulator.setActiveObjectIndex(idx);
+				$(this).addClass('active');
+			} else {
+				$(this).removeClass('active');
+			}
+		}
+		
+		return false;
+	})
+	.addClass('collapsed')
+	.children('ul').hide();
+};
+
+function rebuildList() {
+	if (scene) {
+		$('#exp-obj-list').empty();
+		for (i = 0; i < scene.meshes.length; i++) {
+		var obj = scene.meshes[i];
+			appendObjItem(obj.name, obj.vertices.length, obj.faces.length);
+		}
+	}
+};
+
+function appendObjItem(name, faces, vertices) {
+	$('#exp-obj-list').find('li:has(ul)').unbind('click');
+	$('.collapsed').removeClass('expanded');
+    $('.collapsed').children().hide('medium');
+
+	var child =  '<li>' + name +
+					'<ul>Faces: <span class=".face-number">'+ faces +'</span></ul>'+
+					'<ul>Vertices: <span class=".vertices-number">'+ vertices +'</span></ul>'
+				'</li>';
+	$('#exp-obj-list').append(child);
+	
+	prepareObjectMenu();
+}

@@ -246,6 +246,7 @@ OBJDoc.prototype.parseResult = function() {
 	var objInfo = new Object();
 	objInfo.vertices = vertices;
 	objInfo.normals = normals;
+	objInfo.faces = object.faces;
 	objInfo.smooth_normals = smoothNormals;
 
 	// get the mean value of each axis to translate

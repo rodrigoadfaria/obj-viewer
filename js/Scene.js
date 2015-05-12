@@ -33,11 +33,25 @@ Scene.prototype = {
 	*/
 	remove: function(index) {
 		if (index >= 0 && index < this.meshes.length && index < this.buffers.length) {
-			var rBuffer = this.buffers.splice(index);
-			var rObject = this.meshes.splice(index);
+			var tmpMeshes = new Array(), tmpBuffers = new Array();
+			for (i = 0; i < this.meshes.length; i++) {
+				var rBuffer = this.buffers[i];
+				var rObject = this.meshes[i];
+				
+				if (index === i) {
+					gl.deleteBuffer(rBuffer.nBuffer);
+					gl.deleteBuffer(rBuffer.vBuffer);
+				} else {
+					tmpMeshes.push(rObject);
+					tmpBuffers.push(rBuffer);
+				}
+			}
 			
 			gl.deleteBuffer(rBuffer.nBuffer);
 			gl.deleteBuffer(rBuffer.vBuffer);
+					
+			this.buffers = tmpBuffers;
+			this.meshes = tmpMeshes;
 		}
 	},
 	

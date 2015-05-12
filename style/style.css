@@ -67,13 +67,24 @@ dt {
 }
 
 .sub-title:before {
-  background: no-repeat url("separator.svg") right center;
+  background: no-repeat url("./img/separator.svg") right center;
   background-size: contain;
   content: '';
   float: left;
   height: 64px;
   margin: 0 .7em 0 .8em;
   width: .4em;
+}
+
+#header .info {
+  float: right;
+  margin: 0 30px;
+  font-size: 1em;
+}
+
+span.info a {
+  color: #fff;
+  margin-left: 3px;
 }
 
 #main {
@@ -123,18 +134,6 @@ dt {
 
 #sidebar nav dl {
   margin-top: 0;
-}
-
-#sidebar .info {
-  border-top: 1px solid #e0e0e0;
-  bottom: 0;
-  color: #212121;
-  font-size: 13px;
-  height: 96px;
-  line-height: 24px;
-  padding: 24px;
-  position: absolute;
-  width: auto;
 }
 
 #sidebar nav dl dt {
@@ -245,7 +244,57 @@ dt {
   height: 100%;
   z-index: 10;
   background: rgba( 255, 255, 255, .8 ) 
-              url('loading.gif') 
+              url('./img/loading.gif') 
               50% 50% 
               no-repeat;
 }
+
+/* object list */
+#obj-list-container {
+  margin-top: 15px;
+}
+
+#exp-obj-list {
+  padding: 0px;
+}
+ 
+#exp-obj-list ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#exp-obj-list li:hover {
+  cursor: pointer; 
+}
+
+#exp-obj-list li.active {
+  background-color: #d9dce0;
+  color: #38393d;
+}
+
+#exp-obj-list li {
+    line-height: 140%;
+    text-indent: 0px;
+    background-position: 0px 20px;
+    padding-left: 18px;
+	padding-top: 18px;
+    background-repeat: no-repeat;
+}
+ 
+#exp-obj-list .collapsed {
+    background-image: url(./img/collapsed.png);
+}
+
+#exp-obj-list .expanded {
+    background-image: url(./img/expanded.png);
+}
+
+.face-number {
+  font-weight: 300;
+}
+
+.vertices-number {
+  font-weight: 300;
+}
+/* end object list */

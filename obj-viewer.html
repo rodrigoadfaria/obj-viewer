@@ -136,10 +136,11 @@ void main() {
 	<div id="header">
 		<span class="title">MAC0420-5744</span>
 		<span class="sub-title">Computer Graphics</span>
+		<span class="info">Institute of Mathematics and Statistics - University of Sao Paulo <a href="https://www.ime.usp.br/en"  target="_blank">>></a></span>
 	</div>
 
 	<div id="sidebar">
-		<span id="logo"><img src="./style/logo.png"></img></span>
+		<span id="logo"><img src="./style/img/logo.png"></img></span>
 		<nav>
 			<dl>
 				<dt>
@@ -147,7 +148,11 @@ void main() {
 					<span class="btn-group">
 						<input type="file" id="files" name="files[]" accept=".obj,"></input>
 						<button class="btn" id="btn-load-file">Load OBJ file...</button>
-						<span id="file-name"></span>
+						
+						<div id="obj-list-container">
+							<ul id="exp-obj-list"></ul>
+						</div>
+
 					</span>
 				</dt>
 				<dt>
@@ -175,9 +180,6 @@ void main() {
 			</dl>
 		</nav>
 		
-		<div class="info">
-			<p>Institute of Mathematics and Statistics - University of Sao Paulo <a href="https://www.ime.usp.br/">>></a></p>
-		</div>
 	</div>
 		
 	<div id="main">
