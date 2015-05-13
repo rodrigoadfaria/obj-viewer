@@ -71,7 +71,6 @@ Manipulator.prototype = {
 		$('#manipulator').show();
 		
 		var divContentId = '#m-content-'+ type.toLowerCase();
-		console.log(this.offsetContent);
 		$(divContentId).find('.m-offset').text(this.offsetContent);
 		$(divContentId).show();
 	},
@@ -177,8 +176,6 @@ Manipulator.prototype = {
 
 	rotate: function(object, rot) {
 		if (object) {
-			console.log(rot);
-			console.log(object.rotate);
 			object.rotate = mult(rot, object.rotate);
 			
 			return this.updateMesh(object);
