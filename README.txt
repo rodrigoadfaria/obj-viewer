@@ -33,6 +33,7 @@ MAN
   
   [Load OBJ file...] read a .obj file with the description of faces, vertices, normals and object name.
   Some commands such as 'mtllib', 'usemtl', are not being read.
+  When you load an object, you can see it is description on the left side menu.
   
   [Shader Vertex/Fragment] toggle between two different shaders. This option stop the current vertex/fragment shaders
   and load a new one with different shading algorithm.
@@ -45,6 +46,13 @@ MAN
   
   [Zoom in/out] zoom in/out the scene by rolling the mouse wheel or by holding the right click and 
   dragging to any direction.
+  
+  [Manipulator] you can manipulate an object by selecting it in the left menu. Once you select it, point the mouse
+  in the canvas area and press 'R' or 'r' to rotate, 'T' or 't' to translate and 'S' or 's' to scale. You might press 
+  'X' or 'x', 'Y' or 'y' or 'Z' or 'z' to choose an axis to apply the transformation on a given axis.
+  You can delete an object pressing 'X', 'x' or 'DEL'. It is important to remember that this feature only works if 
+  you haven't pressed any keyword for transformations.
+  You can deselect the object pressing 'ESC'.
 
 CONTACT
 -------

@@ -383,6 +383,7 @@ function mouseMoveListener() {
 							manipulator.apply(d);
 				   oldMouseX = newMouseX;
 				   oldMouseY = newMouseY;
+				   manipulator.updateView();
 				} else {// manipulating the world
 					virtualTB.rotateTo(x, y);
 				}
@@ -434,6 +435,7 @@ function keyUpListener() {
 			}
 
 			manipulator.setType(code);
+			manipulator.makeOffsetView();//no parameter clean the div
 			manipulator.updateView();
 		}
 		

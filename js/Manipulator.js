@@ -15,6 +15,9 @@ Manipulator = function() {
 	this.axis = null;
 	this.active = false;
 	this.index = -1;
+	
+	//used to show the user the offset X, Y and in any transformation
+	this.offsetContent = '';
 };
 
 Manipulator.prototype = {
@@ -63,11 +66,24 @@ Manipulator.prototype = {
 	
 	updateView: function() {
 		var type = this.getType().toString();
-		console.log(type);
 		
 		$('.man-content').hide();
 		$('#manipulator').show();
-		$('#m-content-'+ type.toLowerCase()).show();
+		
+		var divContentId = '#m-content-'+ type.toLowerCase();
+		console.log(this.offsetContent);
+		$(divContentId).find('.m-offset').text(this.offsetContent);
+		$(divContentId).show();
+	},
+	
+	makeOffsetView: function(x, y, z) {
+		if (x != undefined && y != undefined && z != undefined) {
+			this.offsetContent = 'Factors X: '+ x +
+										' Y: '+ y +
+										' Z: '+ z;
+		} else {
+			this.offsetContent = '';
+		}
 	},
 	
 	apply: function(direction) {
@@ -89,7 +105,6 @@ Manipulator.prototype = {
                offset.y = 0;
                offset.z = 0;
 
-               console.log(object.translation);
                if(direction > 0)
                   delta = 0.1;
                else
@@ -102,7 +117,7 @@ Manipulator.prototype = {
                if (this.axis == Key.Z)
                   offset.z = delta;
                   
-               this.translate(object, offset, xT, yT, zT);
+			   this.translate(object, offset, xT, yT, zT);
             } else if (this.type == Key.R) {
                var rot;
                if(direction > 0)
@@ -143,14 +158,16 @@ Manipulator.prototype = {
 	
 	translate: function(object, offset, xT, yT, zT) {
 		if (object) {
-         //var translation = translate(offset.x, offset.y, offset.z);
-         object.translation = translate(offset.x + xT, offset.y + yT, offset.z + zT);
+			this.makeOffsetView(xT, yT, zT);
+			object.translation = translate(offset.x + xT, offset.y + yT, offset.z + zT);
 			return this.updateMesh(object);
 		}
 	},
 	
 	scale: function(object, offset) {
 		if (object) {
+			this.makeOffsetView(offset.x, offset.y, offset.z);
+			
 			var scale = genScale(offset.x, offset.y, offset.z);
 			object.scale = mult(object.scale, scale);
 			
@@ -160,6 +177,8 @@ Manipulator.prototype = {
 
 	rotate: function(object, rot) {
 		if (object) {
+			console.log(rot);
+			console.log(object.rotate);
 			object.rotate = mult(rot, object.rotate);
 			
 			return this.updateMesh(object);
