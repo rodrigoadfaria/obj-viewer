@@ -242,10 +242,11 @@ var render = function() {
 		
 		gl.uniformMatrix4fv(modelMatrixLoc, false, flatten(obj.modelMatrix));
 
-		if (glDraw == GL_DRAW.TRIANGLES)
-			gl.drawArrays( gl.TRIANGLES, 0, obj.vertices.length);
-		else if (glDraw == GL_DRAW.LINE_STRIP)
-			gl.drawArrays(gl.LINE_STRIP, 0, obj.vertices.length);
+		var primitive = gl.TRIANGLES;
+		if (i === manipulator.getActiveObjectIndex())
+			primitive = gl.LINE_STRIP;
+		
+		gl.drawArrays(primitive, 0, obj.vertices.length);
 	}
 }
 
@@ -473,6 +474,7 @@ function keyUpListener() {
 			
 			$('#exp-obj-list>li').removeClass('active');
 			manipulator.updateView();
+			render();
 		}
 	};
 };
@@ -488,9 +490,13 @@ function prepareObjectMenu() {
 				var idx = $(this).index();
 				manipulator.setActiveObjectIndex(idx);
 				$(this).addClass('active');
+				
 				manipulator.updateView();
+				render();
 			} else {
+				manipulator.setActiveObjectIndex(-1);
 				$(this).removeClass('active');
+				render();
 			}
 		}
 		
