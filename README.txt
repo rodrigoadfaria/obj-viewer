@@ -61,24 +61,38 @@ CONTACT
 
 STRUCTURE
 ---------
-  js \
-      Quaternion.js
-      VirtualTrackBall.js
-  libs \
-      jquery-2.1.3.min.js
-      initShaders.js
-      MV.js
-      webgl-utils.js
-  sample_obj \
-      teapot.obj
-  style
-      logo.png
-	  separator.svg
-	  style.css
-  obj-reader.js
-  obj-viewer.html
-  obj-viewer.js
-  README.txt
+│   obj-reader.js
+│   obj-viewer.html
+│   obj-viewer.js
+│   README.txt
+│
+├───documents
+│       EP2.pdf
+│
+├───js
+│       Manipulator.js
+│       Quaternion.js
+│       Scene.js
+│       VirtualTrackBall.js
+│
+├───libs
+│       initShaders.js
+│       jquery-2.1.3.min.js
+│       MV.js
+│       webgl-utils.js
+│
+├───sample_obj
+│       teapot.obj
+│
+└───style
+    │   style.css
+    │
+    └───img
+            collapsed.png
+            expanded.png
+            loading.gif
+            logo.png
+            separator.svg
 	  
 NOTICE
 ------

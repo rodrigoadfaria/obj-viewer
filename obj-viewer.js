@@ -488,6 +488,7 @@ function prepareObjectMenu() {
 				var idx = $(this).index();
 				manipulator.setActiveObjectIndex(idx);
 				$(this).addClass('active');
+				manipulator.updateView();
 			} else {
 				$(this).removeClass('active');
 			}
