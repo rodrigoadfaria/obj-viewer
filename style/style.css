@@ -5,6 +5,7 @@ html, body{
   line-height: 1em;
   margin: 0px;
   background: #f9f9f9;
+  overflow: hidden;
 }
 
 img {
@@ -43,7 +44,7 @@ dt {
 
 #header {
   background-color: #009688;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.26);
+  box-shadow: 0 4px 5px rgba(0,0,0,0.25);
   margin: 0 auto;
   padding-left: 240px;
   overflow: hidden;
@@ -88,8 +89,7 @@ span.info a {
 }
 
 #main {
-  height:auto;
-  overflow:auto;
+  height: auto;
   padding-left: 200px;  
 }
 
@@ -247,6 +247,12 @@ span.info a {
               url('./img/loading.gif') 
               50% 50% 
               no-repeat;
+}
+
+#gl-canvas {
+  height: 100%;
+  width: 100%;
+  margin: 0;
 }
 
 /* object list */

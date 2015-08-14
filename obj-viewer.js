@@ -89,7 +89,7 @@ function init() {
 	
 	// create viewport and clear color
     gl.viewport( 0, 0, canvas.width, canvas.height );
-    gl.clearColor( 0.5, 0.5, 0.5, 1.0 );
+    //gl.clearColor( 0.5, 0.5, 0.5, 1.0 );
     
     // enable depth testing for hidden surface removal
     gl.enable(gl.DEPTH_TEST);
@@ -204,14 +204,14 @@ function prepareElements(initObj) {
 window.onresize = resizeCanvas;
 
 function resizeCanvas() {
-	var height = window.innerHeight;
-	
-	var ratio = canvas.width/canvas.height;
-	var width = height * ratio;
-	
-	canvas.style.width = width / 1.25   + 'px';
-	canvas.style.height = height / 1.25 + 'px';
-	aspect = canvas.width/canvas.height;
+    var width = canvas.clientWidth;
+    var height = $('#sidebar').height() - $('#header').height();
+    if (canvas.width != width || canvas.height != height) {
+        canvas.width = width;
+        canvas.height = height;
+    }
+    
+    aspect = canvas.width/canvas.height;
 }
 
 /**
