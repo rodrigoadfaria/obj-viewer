@@ -62,7 +62,7 @@ CONTACT
 STRUCTURE
 ---------
 │   obj-reader.js
-│   obj-viewer.html
+│   index.html
 │   obj-viewer.js
 │   README.txt
 │
